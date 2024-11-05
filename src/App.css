@@ -36,3 +36,25 @@
     transform: rotate(360deg);
   }
 }
+
+.table {
+  display: flex;
+  flex-flow: column nowrap;
+  border: 1px solid black;
+}
+
+.row {
+  display: flex;
+}
+
+.heading {
+  font-weight: bold;
+}
+
+.cell {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+}
