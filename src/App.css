@@ -49,6 +49,7 @@
 
 .heading {
   font-weight: bold;
+  background-color: #1d9a52;
 }
 
 .cell {
@@ -57,4 +58,18 @@
   justify-content: center;
   align-items: center;
   border: 1px solid;
+}
+
+.playMatchBtn {
+  display: flex;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.playMatchBtn>button {
+  width: 10em;
+  height: 2em;
+  background-color: #1d9a52;
+  border-radius: 5px;
+  border: none;
 }
