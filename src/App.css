@@ -40,16 +40,21 @@
 .table {
   display: flex;
   flex-flow: column nowrap;
-  border: 1px solid black;
+  border: 1px solid #1d9a52;
 }
 
-.row {
+.row, .even-raw {
   display: flex;
+}
+
+.even-raw {
+  background-color: lightgrey;
 }
 
 .heading {
   font-weight: bold;
   background-color: #1d9a52;
+  color: white;
 }
 
 .cell {
@@ -57,7 +62,7 @@
   flex: 1;
   justify-content: center;
   align-items: center;
-  border: 1px solid;
+  border-right: 1px solid #1d9a52;
 }
 
 .playMatchBtn {
@@ -70,6 +75,7 @@
   width: 10em;
   height: 2em;
   background-color: #1d9a52;
+  color: white;
   border-radius: 5px;
   border: none;
 }
