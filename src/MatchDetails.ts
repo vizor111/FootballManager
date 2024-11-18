@@ -10,4 +10,9 @@ export class MatchDetails {
         this.goalsTeam1 = goalsTeam1;
         this.goalsTeam2 = goalsTeam2;
     }
-}
+};
+
+export interface HistoryProps {
+    matchHistory: MatchDetails[];
+};
+  

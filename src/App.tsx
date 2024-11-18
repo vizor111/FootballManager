@@ -2,6 +2,10 @@ import { useState } from 'react';
 import './App.css';
 import teams from './teams';
 import { MatchDetails } from './MatchDetails';
+import History from './HistoryComponent';
+
+import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
+import '@progress/kendo-theme-default/dist/all.css';
 
 function App() {
   const [selectedTeams, setSelectedTeams] = useState<Record<string, boolean>>(
@@ -48,63 +52,69 @@ function App() {
     setSelectedTeams(teams.reduce((acc, team) => ({ ...acc, [team.Name]: false }), {}));
   };
 
+  const goalsScored = (teamName: string) => {
+    return matchHistory
+      .filter(match => match.team1 == teamName)
+      .reduce((prev, current) => { return prev + current.goalsTeam1 }, 0)
+      +
+      matchHistory
+        .filter(match => match.team2 == teamName)
+        .reduce((prev, current) => { return prev + current.goalsTeam2 }, 0)
+  };
+
+  const goalsMissed = (teamName: string) => {
+    return matchHistory
+      .filter(match => match.team1 == teamName)
+      .reduce((prev, current) => { return prev + current.goalsTeam2 }, 0)
+      +
+      matchHistory
+        .filter(match => match.team2 == teamName)
+        .reduce((prev, current) => { return prev + current.goalsTeam1 }, 0)
+  };
+
   return (
     <div>
-      <div className="table">
-        <div className="row heading">
-          <div className="cell">Team</div>
-          <div className="cell">Rating</div>
-          <div className="cell">Selector</div>
-          <div className="cell">Goals scored</div>
-          <div className="cell">Goals missed</div>
-        </div>
-        {teams.map((team, index) => (
-          <div className={index % 2 === 0 ? 'even-raw' : 'row'} key={index}>
-            <div className="cell">{team.Name}</div>
-            <div className="cell">{team.Rating}</div>
-            <div className="cell">
+      <Grid data={teams}>
+        <Column field="Name" title="Team" />
+        <Column field="Rating" title="Rating" />
+        <Column field="Rating" title="Rating" />
+        <Column
+          title="Select team"
+          cell={(props) => (
+            <td>
               <input
                 type="checkbox"
-                checked={selectedTeams[team.Name]}
-                onChange={() => handleCheckboxChange(team.Name)}
+                checked={selectedTeams[props.dataItem.Name]}
+                onChange={() => handleCheckboxChange(props.dataItem.Name)}
               />
-            </div>
-            <div className="cell">
-              {
-                matchHistory
-                  .filter(match => match.team1 == team.Name)
-                  .reduce((prev, current) => { return prev + current.goalsTeam1 }, 0)
-                +
-                matchHistory
-                  .filter(match => match.team2 == team.Name)
-                  .reduce((prev, current) => { return prev + current.goalsTeam2 }, 0)
-              }
-            </div>
-            <div className="cell">
-            {
-                matchHistory
-                  .filter(match => match.team1 == team.Name)
-                  .reduce((prev, current) => { return prev + current.goalsTeam2 }, 0)
-                +
-                matchHistory
-                  .filter(match => match.team2 == team.Name)
-                  .reduce((prev, current) => { return prev + current.goalsTeam1 }, 0)
-              }
-            </div>
-          </div>
-        ))}
+            </td>
+          )}
+        />
+        <Column
+          title="Goals scored"
+          cell={(props) => (
+            <td>
+              {goalsScored(props.dataItem.Name)}
+            </td>
+          )}
+        />
+        <Column
+          title="Goals missed"
+          cell={(props) => (
+            <td>
+              {goalsMissed(props.dataItem.Name)}
+            </td>
+          )}
+        />
+      </Grid>
+
+      <div>
+        <div className='playMatchBtn'>
+          <button onClick={handlePlayMatch}>Play</button>
+        </div>
       </div>
-      <div className='playMatchBtn'>
-        <button onClick={handlePlayMatch}>Play</button>
-      </div>
-      <div className="matchHistory">
-        <h3>Match History:</h3>
-        <ul>
-          {matchHistory.map((match, index) => (
-            <li key={index}>{match.team1} : {match.goalsTeam1} vs {match.team2} : {match.goalsTeam2}</li>
-          ))}
-        </ul>
-      </div>
+
+      <History matchHistory={matchHistory} />
     </div>
   );
 }
