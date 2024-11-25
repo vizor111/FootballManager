@@ -1,4 +1,4 @@
-import { HistoryProps } from './MatchDetails';
+import { HistoryProps } from "../MatchDetails";
 
 const History: React.FC<HistoryProps> = ({ matchHistory }) => {
     return (
